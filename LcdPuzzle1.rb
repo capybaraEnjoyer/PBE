@@ -40,6 +40,28 @@ class Lcd
 		gets
 		display.clear
 	end
+
+	def writeTextview(text)
+		write = text.delete "\n"
+		numWri = write.length
+		display = I2C::Drivers::LCD::Display.new('/dev/i2c-1', 0x27, rows=20, cols=4)
+		
+		numNovo = 0
+		i = 0
+		
+		while(numWri > numNovo)	
+		
+			if(numWri < numNovo + @filas) 
+				display.text("#{write[numNovo,@filas]}", i)
+				numNovo = numWri
+			else 
+				display.text("#{write[numNovo,@filas]}", i)
+				numNovo = numNovo + @filas
+				i = i + 1
+			end
+		end
+	end
+
 end
 
 #Ejemplo:
